@@ -61,6 +61,7 @@ export function LoginForm({ onSuccess }) {
     <div className="loginform">
       <div>
         <h1>Please Log in to continue.</h1>
+        <br/>
         <form onSubmit={handleSubmit} className="flex max-w-sm flex-col gap-3 rounded border p-6">
           <label className="flex flex-col gap-1 text-sm">
             <span>Email</span>
@@ -72,7 +73,7 @@ export function LoginForm({ onSuccess }) {
               className="rounded border px-3 py-2"
             />
           </label>
-
+          <br/><br/>
           <label className="flex flex-col gap-1 text-sm">
             <span>Password</span>
             <input
@@ -85,10 +86,10 @@ export function LoginForm({ onSuccess }) {
           </label>
 
           {error && <p className="text-sm text-red-600">{error}</p>}
-
+          <br/><br/>
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading} id='login-btn'
             className="mt-2 rounded bg-black px-4 py-2 text-white disabled:opacity-50"
           >
             {loading ? 'Signing in...' : 'Log in'}

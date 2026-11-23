@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import { cookies } from 'next/headers';
 import { LoginForm } from './components/loginform';
-import { LogoutButton } from './components/logoutbtn';
 import Content from './templates/content';
 import Header from './templates/header';
 function parseJwtPayload(token) {
@@ -22,7 +21,12 @@ async function SessionView() {
   const jwt = cookieStore.get('fitness_jwt')?.value ?? null;
 
   if (!jwt) {
-    return <LoginForm />;
+    return (
+    <>
+    <Header/>
+      <LoginForm />
+    </>
+    );
   }
 
   const payload = parseJwtPayload(jwt);

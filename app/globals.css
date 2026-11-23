@@ -41,6 +41,7 @@ h1 {
   min-height: 100px;
 }
 
+
 .navbar {
   list-style-type: none;
   margin: 0;
@@ -70,5 +71,14 @@ h1 {
 
 .loginform{
   text-align: center;
-  background: blue;
+}
+
+#login-btn{
+  padding: 2%;
+  width: 500px;
+  border-radius: 10px;
+}
+
+input{
+  border-radius: 10px;
 }

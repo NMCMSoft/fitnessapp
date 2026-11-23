@@ -1,11 +1,9 @@
 import { LogoutButton } from "../components/logoutbtn";
 
 function Content({ payload }) {
-      const role = payload?.Role || payload?.role || 'User';
-  const name = payload?.Name || 'User';
     return (
         <>
-        
+        <p>{payload.Role}</p>
             <LogoutButton/>
         </>
     );
