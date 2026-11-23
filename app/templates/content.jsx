@@ -1,10 +1,12 @@
-function Content({ name, role }) {
+import { LogoutButton } from "../components/logoutbtn";
+
+function Content({ payload }) {
+      const role = payload?.Role || payload?.role || 'User';
+  const name = payload?.Name || 'User';
     return (
         <>
-            <div className="content-sidenav">
-            </div>
-            <div className="content-master">
-            </div>
+        
+            <LogoutButton/>
         </>
     );
 
