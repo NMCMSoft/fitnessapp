@@ -33,7 +33,7 @@ async function SessionView() {
 
   return (
     <>
-    <Header/>
+    <Header payload={payload}/>
     <Content payload={payload}/>
     </>
   );

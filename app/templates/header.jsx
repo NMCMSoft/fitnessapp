@@ -1,3 +1,5 @@
+import { LogoutButton } from "../components/logoutbtn";
+
 function Header({ payload }) {
     if(payload==null){
         return(
@@ -15,7 +17,8 @@ function Header({ payload }) {
                 <h1>Gruppe 36 - Fitness app</h1>
                 <hr />
                 <ul className="navbar">
-                    <li><button>My Workouts</button></li>
+                    <li><button className="welcome-blerb">Welcome, {payload.Name}</button></li>
+                    <LogoutButton/>
                 </ul>
 
             </div>

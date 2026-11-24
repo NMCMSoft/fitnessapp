@@ -1,14 +1,17 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-const LOGIN_URL = 'https://assignment2.swafe.dk/api/Users/login';
-
 export function LoginForm({ onSuccess }) {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  useEffect(() => {
+    document.title="Log in | Fitness APP";
+  }, []);
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -16,7 +19,7 @@ export function LoginForm({ onSuccess }) {
     setLoading(true);
 
     try {
-      const res = await fetch(LOGIN_URL, {
+      const res = await fetch('https://assignment2.swafe.dk/api/Users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -31,7 +34,7 @@ export function LoginForm({ onSuccess }) {
       const jwt = data?.jwt ?? null;
 
       if (!jwt) {
-        throw new Error('Response did not include a jwt.');
+        throw new Error('Response did not include a jwt!');
       }
       const cacheRes = await fetch('/api/auth/session', {
         method: 'POST',
@@ -47,8 +50,6 @@ export function LoginForm({ onSuccess }) {
       if (typeof onSuccess === 'function') {
         onSuccess(jwt);
       }
-
-      // Re-run Server Component check in page.jsx
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unexpected login error');
@@ -89,8 +90,7 @@ export function LoginForm({ onSuccess }) {
           <br/><br/>
           <button
             type="submit"
-            disabled={loading} id='login-btn'
-            className="mt-2 rounded bg-black px-4 py-2 text-white disabled:opacity-50"
+            disabled={loading} className='login-btn'
           >
             {loading ? 'Signing in...' : 'Log in'}
           </button>

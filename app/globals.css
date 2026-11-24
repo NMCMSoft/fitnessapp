@@ -11,7 +11,7 @@
     --background: darkgray;
     --formbg: white;
     --fontclr: black;
-    --fontclr-inverse:white;
+    --fontclr-inverse: white;
     --accent: #10325e;
   }
 }
@@ -54,7 +54,20 @@ h1 {
   float: left;
 }
 
-.navbar li button {
+.loginform {
+  text-align: center;
+}
+
+.login-btn {
+  padding: 2%;
+  width: 100%;
+}
+
+input {
+  border-radius: 10px;
+}
+
+button {
   display: block;
   color: white;
   text-align: center;
@@ -64,21 +77,42 @@ h1 {
   background: none;
 }
 
-.navbar li button:hover {
+.welcome-blerb:hover {
+  background: var(--background)
+}
+
+button:hover {
   background: var(--accent);
   color: white;
 }
 
-.loginform{
-  text-align: center;
+.content-body {
+  padding: 20px;
+  border-top: 2px black ridge;
 }
 
-#login-btn{
-  padding: 2%;
-  width: 500px;
-  border-radius: 10px;
+.hidden-response-json{
+  display: none;
 }
 
-input{
-  border-radius: 10px;
+.workout-card{
+  text-align: left;
+  background: linear-gradient(90deg,rgba(255, 255, 255, 0.341),rgba(0, 0, 0, 0));
+  text-shadow: 1px 1px 5px black;
+  max-width: 100%;
+}
+
+.display-grid{
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+}
+
+.view-container{
+  border-bottom: 2px white ridge;
+}
+
+.clk-ico{
+  width: 20px;
+  float:left;
+  padding-right: 10px;
 }
