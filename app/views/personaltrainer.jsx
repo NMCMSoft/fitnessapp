@@ -2,10 +2,11 @@
 import { ApiClient } from "../api/extService";
 import { useState } from "react";
 import { useEffect } from "react";
+import PTDetail from "./subviews/ptdetail";
 
-function PTView({ jwt }) {
+function PTView({jwt}) {
     const [currView, setCurrView] = useState(null);
-
+    const [programs, setPrograms] = useState(null);
 
     const setProgView = (idView) => {
         const url = new URL(window.location.href);
@@ -31,53 +32,50 @@ function PTView({ jwt }) {
 
     return (
         <>
-            {
+        {
                 currView == null ?
-                    <>
-                        <div className="view-container">
-                            <h2>Workouts under your supervision;</h2>
-                            <>{currView}</>
-                            <div className="display-grid">
-                                {/*<ApiClient
-                                    url={"https://assignment2.swafe.dk/api/WorkoutPrograms/?id="}
-                                    method="GET"
-                                    token={jwt}
-                                    autoFetch
-                                    onResult={}
-                                />
-                                {Array.isArray(programs) && (
-                                    <>
-                                        {programs.map((prog) => (
-                                            <button key={prog.workoutProgramId} className="workout-card" onClick={() => setProgView(prog.workoutProgramId)}>
-                                                <h3>{prog.description}</h3>
-                                                <hr />
-                                                <p><b>Difficulty; </b><u>{prog.name}</u></p>
-                                                {
-                                                    <ul>
-                                                        {(prog.exercises ?? []).map((ex) => (
-                                                            <li key={ex.exerciseId}>
-                                                                {ex.name}
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                }
-                                            </button>
-                                        ))}
-                                    </>
-
-)}*/}
-                            </div>
-
+                <>
+                    <div className="view-container">
+                        <h2>Workouts under your supervision;</h2>
+                        <>{currView}</>
+                        <div className="display-grid">
+                            <ApiClient
+                                url={"https://assignment2.swafe.dk/api/WorkoutPrograms/trainer"}
+                                method="GET"
+                                token={jwt}
+                                autoFetch
+                                onResult={setPrograms}
+                            />
+                            {Array.isArray(programs) && (
+                                <>
+                                    {programs.map((prog) => (
+                                        <button key={prog.workoutProgramId} className="workout-card" onClick={() => setProgView(prog.workoutProgramId)}>
+                                            <h3>{prog.description}</h3>
+                                            <hr />
+                                            <p><b>Difficulty; </b><u>{prog.name}</u></p>
+                                            {
+                                                <ul>
+                                                    {(prog.exercises ?? []).map((ex) => (
+                                                        <li key={ex.exerciseId}>
+                                                            {ex.name}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            }
+                                        </button>
+                                    ))}
+                                </>
+                            )}
                         </div>
-                    </>
-                    :
-                    <>
-                        <button onClick={() => setProgView(null)}>
-                            <h1>{"< Go back"}</h1>
-                        </button>
-                        {/*<ClientDetail workoutid={currView} jwt={jwt} />*/}
-
-                    </>
+                    </div>
+                </>
+                :
+                <>
+                    <button onClick={() => setProgView(null)}>
+                        <h1>{"< Go back"}</h1>
+                    </button>
+                    {<PTDetail workoutid={currView} jwt={jwt} />}
+                </>
             }
         </>
     );
