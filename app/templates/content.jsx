@@ -15,7 +15,7 @@ async function Content({ payload }) {
         <>
         <div className="content-body">
         {
-            payload.Role == "Manager"? <ManagerView/>  : payload.Role == "PersonalTrainer"? <PTView jwt={jwt}/> : <ClientView clientID={payload.ClientId} jwt={jwt}/>
+            payload.Role == "Manager"? <ManagerView/>  : payload.Role == "PersonalTrainer"? <PTView personalId={payload.UserId} jwt={jwt}/> : <ClientView clientID={payload.ClientId} jwt={jwt}/>
         }
         </div>
         </>

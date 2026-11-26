@@ -1,5 +1,5 @@
 'use client';
-import { ApiClient, GET } from "../../api/extService";
+import { ApiClient, GET, POST } from "../../api/extService";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -16,11 +16,11 @@ Todo;
 
 /*Workout anatomy;
 {
-  "workoutProgramId": 0,
   "name": "string",
   "description": "string",
-  "personalTrainerId": 0,
-  "clientId": 0
+  "sets": 0,
+  "repetitions": 0,
+  "time": "string"
 }
 
 */
@@ -29,8 +29,11 @@ Todo;
 
 function PTDetail({ workoutid, jwt }) {
     const [programs, setPrograms] = useState(null);
-    const [new_exc_name, setNew_exc_name] = useState(null); /*adds a new WORKOUT to a workout PLAN (regime) */
-    const [new_exc_description, setNew_exc_description] = useState(null); /*adds a new WORKOUT to a workout PLAN (regime) */
+    const [new_exc_name, setNew_exc_name] = useState(null); /*adds a new EXERCISE to a workout PLAN (regime) */
+    const [new_exc_description, setNew_exc_description] = useState(null); /*adds a new EXERCISE to a workout PLAN (regime) */
+    const [new_exc_sets, setNew_exc_sets] = useState(null); /*adds a new EXERCISE to a workout PLAN (regime) */
+    const [new_exc_reps, setNew_exc_reps] = useState(null); /*adds a new EXERCISE to a workout PLAN (regime) */
+    const [new_exc_time, setNew_exc_time] = useState(null); /*adds a new EXERCISE to a workout PLAN (regime) */
 
     const [curruserprog, setCurruserprog] = useState(null);
 
@@ -50,7 +53,15 @@ function PTDetail({ workoutid, jwt }) {
     async function handleSubmit(e) {
         e.preventDefault();
         console.log(`adding new workout to ${programs?.[0].workoutProgramId} for user ${programs?.[0].clientId}`);
-
+        if(await POST({
+            url: `https://assignment2.swafe.dk/api/Exercises/Program/${programs?.[0].workoutProgramId}`,
+            body: { name: new_exc_name, description:  new_exc_description, sets: new_exc_sets
+                ,repetitions:new_exc_reps, time:new_exc_time
+            },
+            token: jwt,
+            })){
+                window.location.reload();
+            }
     }
 
     return (
@@ -66,6 +77,7 @@ function PTDetail({ workoutid, jwt }) {
                 token={jwt}
                 autoFetch
                 onResult={setPrograms}
+                onChange={programs}
             />
 
 
@@ -85,7 +97,7 @@ function PTDetail({ workoutid, jwt }) {
 
                                                 <div>
                                                     <img className="clk-ico" src={"https://raw.githubusercontent.com/NMCMSoft/static-hosted-webassets/refs/heads/main/clk.png"} />
-                                                    {ex.time ? ` (${ex.time})` : 'No time limit set'}
+                                                    {ex.time ? `(${ex.time})` : 'No time limit set'}
                                                 </div>
                                                 <br />
                                                 <i>How you do it:</i>
@@ -117,7 +129,37 @@ function PTDetail({ workoutid, jwt }) {
                                                 <input
                                                     type="text"
                                                     required
-                                                    onChange={(e) => setNew_exc_name(e.target.value)}
+                                                    onChange={(e) => setNew_exc_description(e.target.value)}
+                                                    className="rounded border px-3 py-2"
+                                                />
+                                            </label>
+                                            <br/>
+                                            <label className="flex flex-col gap-1 text-sm">
+                                                <span>Sets: </span>
+                                                <input
+                                                    type="number"
+                                                    required
+                                                    onChange={(e) => setNew_exc_sets(e.target.value)}
+                                                    className="rounded border px-3 py-2"
+                                                />
+                                            </label>
+                                            <br/>
+                                            <label className="flex flex-col gap-1 text-sm">
+                                                <span>Repetitions: </span>
+                                                <input
+                                                    type="number"
+                                                    required
+                                                    onChange={(e) => setNew_exc_reps(e.target.value)}
+                                                    className="rounded border px-3 py-2"
+                                                />
+                                            </label>
+                                            <br/>
+                                            <label className="flex flex-col gap-1 text-sm">
+                                                <span>Time: </span>
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    onChange={(e) => setNew_exc_time(e.target.value)}
                                                     className="rounded border px-3 py-2"
                                                 />
                                             </label>

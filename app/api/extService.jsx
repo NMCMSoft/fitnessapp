@@ -77,3 +77,20 @@ export async function GET({ url, token }) {
   const text = await res.text();
   return text ? JSON.parse(text) : null;
 }
+
+export async function POST({ url, body, token }) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(body ?? {}),
+    cache: 'no-store',
+  });
+
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
