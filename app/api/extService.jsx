@@ -72,8 +72,8 @@ export async function GET({ url, token }) {
     cache: 'no-store',
   });
 
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
+  /**if (!res.ok) throw new Error(`HTTP ${res.status}`);*/
+/* @HERE: supresses empty responses - but might be a good idea to enable while I write code */
   const text = await res.text();
   return text ? JSON.parse(text) : null;
 }

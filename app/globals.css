@@ -136,3 +136,7 @@ button:hover {
 .workout-div{
   border-bottom: 2px white ridge;
 }
+
+b{
+  text-shadow: 1px 1px 6px black;
+}
