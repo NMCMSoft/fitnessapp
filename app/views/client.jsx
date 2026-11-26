@@ -29,6 +29,7 @@ const setProgView = (idView) => {
     useEffect(() => {
         const queryParams = new URLSearchParams(window.location.search);
         const id = queryParams.get('viewid');
+        document.title = "Fitness App | Client";
         setCurrView(id);
     }, []);
     /*
