@@ -3,18 +3,7 @@ import { ApiClient, GET, POST } from "../../api/extService";
 import { useState } from "react";
 import { useEffect } from "react";
 
-/*
-@HERE: 
-Todo;
-- see & inspect workouts tied to PT -- DONE
-- create workouts in ptdetail (here) -- 
-- add new exercise (here)
-- see a list of clients (base view) --
-
-*/
-
-
-/*Workout anatomy;
+/*exercise anatomy;
 {
   "name": "string",
   "description": "string",
@@ -36,32 +25,38 @@ function PTDetail({ workoutid, jwt }) {
     const [new_exc_time, setNew_exc_time] = useState(null); /*adds a new EXERCISE to a workout PLAN (regime) */
 
     const [curruserprog, setCurruserprog] = useState(null);
-
+    const clientId = Array.isArray(programs) ? programs[0]?.clientId : programs?.clientId;
     useEffect(() => {
-        if (!jwt) return;
-        const url = `https://assignment2.swafe.dk/api/Users/${programs?.[0]?.clientId}`;
-        console.log(`user id; ${programs?.[0]?.clientId}`);
-        const token = jwt;
-        GET({ url, token })
+        if (!jwt || !workoutid) return;
+
+        GET({
+            url: `https://assignment2.swafe.dk/api/WorkoutPrograms/${workoutid}`,
+            token: jwt,
+        })
             .then((data) => {
-                const item = Array.isArray(data) ? data[0] : data;
-                setCurruserprog(item?.firstName + " " + item?.lastName ?? '');
+                if (!data) {
+                    setPrograms([]);
+                    return;
+                }
+                setCurruserprog(data?.clientId ?? '');
+                setPrograms(Array.isArray(data) ? data : [data]);
             })
-            .catch((err) => console.error(err));
-    }, [programs]);/*It's gonna cause some errors because of race condition, shouldn't affect anything*/
+            .catch((err) => console.error('WorkoutProgram GET failed:', err));
+    }, [programs, workoutid]);
 
     async function handleSubmit(e) {
         e.preventDefault();
         console.log(`adding new workout to ${programs?.[0].workoutProgramId} for user ${programs?.[0].clientId}`);
-        if(await POST({
+        if (await POST({
             url: `https://assignment2.swafe.dk/api/Exercises/Program/${programs?.[0].workoutProgramId}`,
-            body: { name: new_exc_name, description:  new_exc_description, sets: new_exc_sets
-                ,repetitions:new_exc_reps, time:new_exc_time
+            body: {
+                name: new_exc_name, description: new_exc_description, sets: new_exc_sets
+                , repetitions: new_exc_reps, time: new_exc_time
             },
             token: jwt,
-            })){
-                window.location.reload();
-            }
+        })) {
+            window.location.reload();
+        }
     }
 
     return (
@@ -72,12 +67,11 @@ function PTDetail({ workoutid, jwt }) {
             -- async GET retrieves helper info on demand (readibility i guess)
             */}
             <ApiClient
-                url={`https://assignment2.swafe.dk/api/WorkoutPrograms/?id=${workoutid}`}
+                url={`https://assignment2.swafe.dk/api/WorkoutPrograms/${workoutid}`}
                 method="GET"
                 token={jwt}
                 autoFetch
                 onResult={setPrograms}
-                onChange={programs}
             />
 
 
@@ -133,7 +127,7 @@ function PTDetail({ workoutid, jwt }) {
                                                     className="rounded border px-3 py-2"
                                                 />
                                             </label>
-                                            <br/>
+                                            <br />
                                             <label className="flex flex-col gap-1 text-sm">
                                                 <span>Sets: </span>
                                                 <input
@@ -143,7 +137,7 @@ function PTDetail({ workoutid, jwt }) {
                                                     className="rounded border px-3 py-2"
                                                 />
                                             </label>
-                                            <br/>
+                                            <br />
                                             <label className="flex flex-col gap-1 text-sm">
                                                 <span>Repetitions: </span>
                                                 <input
@@ -153,7 +147,7 @@ function PTDetail({ workoutid, jwt }) {
                                                     className="rounded border px-3 py-2"
                                                 />
                                             </label>
-                                            <br/>
+                                            <br />
                                             <label className="flex flex-col gap-1 text-sm">
                                                 <span>Time: </span>
                                                 <input
@@ -175,7 +169,7 @@ function PTDetail({ workoutid, jwt }) {
                                     <br />
                                     <div className="put-form">
                                         <h3>Workout program currently assigned to:</h3>
-                                        <p><b>{curruserprog}</b></p>
+                                        <p><b id="user-id">{curruserprog}</b></p>
                                     </div>
                                     <br />
                                 </>
